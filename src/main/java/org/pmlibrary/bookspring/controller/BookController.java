@@ -32,6 +32,11 @@ public class BookController {
         return bookService.readByID(id);
     }
 
+    @GetMapping("/read-by-title/{title}")
+    public BookResponseDTO readByTitle(@PathVariable String title) {
+        return bookService.readBookByTitle(title);
+    }
+
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam Long id, @RequestBody BookRequestDTO bookRequestDTO) {
         return bookService.update(id, bookRequestDTO);
@@ -42,4 +47,5 @@ public class BookController {
         return bookService.delete(id);
     }
 }
+
 

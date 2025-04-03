@@ -31,14 +31,15 @@ public class BookService {
         this.authorRepository = authorRepository;
     }
 
-    public ResponseEntity<String> create(BookRequestDTO bookRequestDTO) {
+    public BookResponseDTO create(BookRequestDTO bookRequestDTO) {
         AuthorEntity authorEntity = authorRepository.findById(bookRequestDTO.getAuthorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Author", bookRequestDTO.getAuthorId()));
 
         BookEntity bookEntity = modelMapper.map(bookRequestDTO, BookEntity.class);
         bookEntity.setAuthor(authorEntity);
         bookRepository.save(bookEntity);
-        return new ResponseEntity<>("Book created successfully!", HttpStatus.CREATED);
+
+        return modelMapper.map(bookEntity, BookResponseDTO.class);
     }
 
     public List<BookResponseDTO> readAll() {
@@ -54,7 +55,7 @@ public class BookService {
         return modelMapper.map(bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book", id)), BookResponseDTO.class);
     }
 
-    public ResponseEntity<String> update(Long id, BookRequestDTO bookRequestDTO) {
+    public BookResponseDTO update(Long id, BookRequestDTO bookRequestDTO) {
         BookEntity bookEntity = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book", id));
 
@@ -64,7 +65,8 @@ public class BookService {
         modelMapper.map(bookRequestDTO, bookEntity);
         bookEntity.setAuthor(authorEntity);
         bookRepository.save(bookEntity);
-        return new ResponseEntity<>("Book updated successfully!", HttpStatus.OK);
+
+        return modelMapper.map(bookEntity, BookResponseDTO.class);
     }
 
     public ResponseEntity<String> delete(Long id) {

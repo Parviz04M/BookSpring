@@ -32,7 +32,6 @@ public class BookService {
     }
 
     public ResponseEntity<String> create(BookRequestDTO bookRequestDTO) {
-        // Check if author exists
         AuthorEntity authorEntity = authorRepository.findById(bookRequestDTO.getAuthorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Author", bookRequestDTO.getAuthorId()));
 
@@ -81,5 +80,4 @@ public class BookService {
         return modelMapper.map(bookRepository.readBookByTitleIgnoreCase(title), BookResponseDTO.class);
     }
 }
-
 

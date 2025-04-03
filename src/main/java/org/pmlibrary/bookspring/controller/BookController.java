@@ -18,8 +18,8 @@ public class BookController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody BookRequestDTO bookRequestDTO) {
-        return bookService.create(bookRequestDTO);
+    public ResponseEntity<BookResponseDTO> create(@RequestBody BookRequestDTO bookRequestDTO) {
+        return new ResponseEntity<>(bookService.create(bookRequestDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/")
@@ -38,8 +38,8 @@ public class BookController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestParam Long id, @RequestBody BookRequestDTO bookRequestDTO) {
-        return bookService.update(id, bookRequestDTO);
+    public ResponseEntity<BookResponseDTO> update(@RequestParam Long id, @RequestBody BookRequestDTO bookRequestDTO) {
+        return new ResponseEntity<>(bookService.update(id, bookRequestDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

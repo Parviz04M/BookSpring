@@ -23,9 +23,10 @@ public class AuthorService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<String> create(AuthorRequestDTO authorRequestDTO) {
-        authorRepository.save(modelMapper.map(authorRequestDTO, AuthorEntity.class));
-        return new ResponseEntity<>("Author created successfully!", HttpStatus.CREATED);
+    public AuthorResponseDTO create(AuthorRequestDTO authorRequestDTO) {
+        AuthorEntity authorEntity = modelMapper.map(authorRequestDTO, AuthorEntity.class);
+        authorRepository.save(authorEntity);
+        return modelMapper.map(authorEntity, AuthorResponseDTO.class);
     }
 
     public List<AuthorResponseDTO> readAll() {
@@ -41,13 +42,13 @@ public class AuthorService {
         return modelMapper.map(authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author", id)), AuthorResponseDTO.class);
     }
 
-    public ResponseEntity<String> update(Long id, AuthorRequestDTO authorRequestDTO) {
+    public AuthorResponseDTO update(Long id, AuthorRequestDTO authorRequestDTO) {
         return authorRepository.findById(id)
                 .map(authorEntity -> {
                     modelMapper.map(authorRequestDTO, authorEntity);
                     authorRepository.save(authorEntity);
-                    return new ResponseEntity<>("Author updated successfully!", HttpStatus.OK);
-                }).orElse(new ResponseEntity<>("Author not found!", HttpStatus.NOT_FOUND));
+                    return modelMapper.map(authorEntity, AuthorResponseDTO.class);
+                }).orElseThrow(() -> new ResourceNotFoundException("Author", id));
     }
 
     public ResponseEntity<String> delete(Long id) {

@@ -18,8 +18,8 @@ public class AuthorController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody AuthorRequestDTO authorRequestDTO) {
-        return authorService.create(authorRequestDTO);
+    public ResponseEntity<AuthorResponseDTO> create(@RequestBody AuthorRequestDTO authorRequestDTO) {
+        return new ResponseEntity<>(authorService.create(authorRequestDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/")
@@ -38,8 +38,8 @@ public class AuthorController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestParam Long id, @RequestBody AuthorRequestDTO authorRequestDTO) {
-        return authorService.update(id, authorRequestDTO);
+    public ResponseEntity<AuthorResponseDTO> update(@RequestParam Long id, @RequestBody AuthorRequestDTO authorRequestDTO) {
+        return new ResponseEntity<>(authorService.update(id, authorRequestDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
